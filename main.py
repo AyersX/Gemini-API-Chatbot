@@ -17,6 +17,7 @@ def main():
   API_KEY = os.getenv("API_KEY")
   if not API_KEY:
     raise ValueError("API_KEY not found in .env")
+  client = genai.Client(api_key=API_KEY)
 
 
   while True:
@@ -31,7 +32,7 @@ def main():
     if query.lower() == "out":
       break
 
-    knowledge:str = history_trend(query, index_knowledge, chunks_knowledge)
+    knowledge:str = knowledge_trend(query, index_knowledge, chunks_knowledge)
 
     history:str = history_trend(query, index_history, chunks_history)
     if LATEST and LATEST in history:
@@ -48,7 +49,6 @@ def main():
 {query}\n\n\n""".strip()
 
     INSTRUCTIONS = getprompt()
-    client = genai.Client(api_key=API_KEY)
     ai_config = types.GenerateContentConfig(
       system_instruction=INSTRUCTIONS,
       max_output_tokens=800,
@@ -70,12 +70,12 @@ def main():
 
     #see the prompts for debugging (optional)
     #Print(ALLL_PROMPTS)
-
     print("thinking..")
-    time.sleep(2)
     print(f"{'='*98:^80}")
     print(f"\n{'THE ANSWER':^55}")
+    time.sleep(2)
     print("AI: ",response.text, end="", flush=True)
+
 
     clean_resp = clean(response.text)
     save(query, clean_resp)
