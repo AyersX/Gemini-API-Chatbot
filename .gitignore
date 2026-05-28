@@ -1,0 +1,16 @@
+.env
+__pycache__/
+*.pyc
+env
+.env
+__pycache__/
+*.pyc
+env
+history.txt
+history.bin
+knowledge.txt
+knowledge.bin
+lastchat.txt
+prompts.txt
+data/
+test.py
